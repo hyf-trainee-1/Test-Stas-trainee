@@ -1,0 +1,32 @@
+name: README Character Count Check
+
+on:
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  check-readme:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Count characters in README.md
+        id: count
+        run: |
+          CHAR_COUNT=$(wc -m < README.md)
+          echo "Character count: $CHAR_COUNT"
+          echo "char_count=$CHAR_COUNT" >> $GITHUB_OUTPUT
+      
+      - name: Check if character count is over 100
+        run: |
+          if [ ${{ steps.count.outputs.char_count }} -gt 100 ]; then
+            echo "✅ Success! README.md has ${{ steps.count.outputs.char_count }} characters (more than 100)"
+            exit 0
+          else
+            echo "❌ Failed! README.md has ${{ steps.count.outputs.char_count }} characters (need more than 100)"
+            exit 1
+          fi
