@@ -15,7 +15,7 @@ jobs:
       - name: Count characters in README.md
         id: count
         run: |
-          CHAR_COUNT=$(wc -c < README.md)
+          CHAR_COUNT=$(wc -m < README.md)
           echo "Character count: $CHAR_COUNT"
           echo "char_count=$CHAR_COUNT" >> $GITHUB_OUTPUT
       
